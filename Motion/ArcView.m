@@ -26,6 +26,11 @@
     UIImage *image = [UIImage imageNamed:@"test.png"];
     self.imageLayer.contents = (__bridge id)image.CGImage;
     [self.layer insertSublayer:self.imageLayer above:self.parentLayer];
+    self.imageLayer.shadowColor = [[UIColor grayColor] CGColor];
+    self.imageLayer.shadowOffset = CGSizeMake(10, 50);
+    self.imageLayer.shadowOpacity = 1.0;
+    self.imageLayer.shadowRadius = 10.0;
+
 }
 
 - (void)drawRect:(CGRect)rect {
