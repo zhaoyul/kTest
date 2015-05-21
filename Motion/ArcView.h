@@ -10,4 +10,5 @@
 
 @interface ArcView : UIView
 - (void)startAnimation;
+- (void)changeImage;
 @end

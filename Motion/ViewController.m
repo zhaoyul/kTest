@@ -30,5 +30,8 @@
 - (IBAction)animation:(id)sender {
     [self.containerView startAnimation];
 }
+- (IBAction)changeImage:(id)sender {
+    [self.containerView changeImage];
+}
 
 @end

@@ -9,28 +9,69 @@
 #import "ArcView.h"
 
 @interface ArcView ()
-@property (nonatomic, strong) CAShapeLayer *pathLayer;
+@property (nonatomic, strong) CAShapeLayer *pathLayerFirstHalf;
+@property (nonatomic, strong) CAShapeLayer *pathLayerLastHalf;
+
 @property (nonatomic, strong) CATransformLayer *parentLayer;
 @property (nonatomic, strong) CALayer *imageLayer;
 @end
 
 @implementation ArcView
 
+-(CAShapeLayer *)pathLayerFirstHalf{
+    if (_pathLayerFirstHalf == nil)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        
+        shapeLayer.path = [[self samplePathFirstHalf] CGPath];
+        shapeLayer.strokeColor = [[UIColor grayColor] CGColor];
+        shapeLayer.fillColor = nil;
+        shapeLayer.lineWidth = 5.0f;
+        shapeLayer.lineJoin = kCALineJoinBevel;
+        
+        _pathLayerFirstHalf = shapeLayer;
+    }
+    return _pathLayerFirstHalf;
+
+}
+
+-(CAShapeLayer *)pathLayerLastHalf{
+    if (_pathLayerLastHalf == nil)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        
+        shapeLayer.path = [[self samplePathLastHalf] CGPath];
+        shapeLayer.strokeColor = [[UIColor grayColor] CGColor];
+        shapeLayer.fillColor = nil;
+        shapeLayer.lineWidth = 5.0f;
+        shapeLayer.lineJoin = kCALineJoinBevel;
+        
+        [self.parentLayer addSublayer:shapeLayer];
+        
+        _pathLayerLastHalf = shapeLayer;
+    }
+    return _pathLayerLastHalf;
+    
+}
+
+
 
 - (void)addImageLayer {
     //    CALayer *green = [ArcView createLayerWithColor:[UIColor greenColor] withPosition:self.layer.position withFrame:self.frame];
     //    
     //    [self.parentLayer addSublayer:green];
-    self.imageLayer = [CALayer layer];
-    self.imageLayer.frame = self.bounds;
     UIImage *image = [UIImage imageNamed:@"test.png"];
+    self.imageLayer = [CALayer layer];
+    self.imageLayer.frame = CGRectMake(0, 0, image.size.width,  image.size.height);
+    self.imageLayer.position = self.layer.position;
     self.imageLayer.contents = (__bridge id)image.CGImage;
     [self.layer insertSublayer:self.imageLayer above:self.parentLayer];
     self.imageLayer.shadowColor = [[UIColor grayColor] CGColor];
-    self.imageLayer.shadowOffset = CGSizeMake(10, 50);
-    self.imageLayer.shadowOpacity = 1.0;
+    self.imageLayer.shadowOpacity = 0.5;
     self.imageLayer.shadowRadius = 10.0;
-
+    CGRect ovalRect = CGRectMake(0.0f, self.imageLayer.bounds.size.height + 5, self.imageLayer.bounds.size.width, 50);
+    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:ovalRect];
+    self.imageLayer.shadowPath = path.CGPath;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -73,38 +114,46 @@
     return green;
 }
 
-- (UIBezierPath *)samplePath
+- (UIBezierPath *)samplePathFirstHalf
 {
-    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(0 + 30, 0 + 30, self.bounds.size.width -60, self.bounds.size.height -60)];
-
+//    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(0 + 30, 0 + 30, self.bounds.size.width -60, self.bounds.size.height -60)];
+    UIBezierPath* ovalPath  = [UIBezierPath bezierPathWithArcCenter:self.layer.position radius:self.layer.bounds.size.width/2 - 30 startAngle:0 endAngle:M_PI clockwise:YES];
     
-    // build the path here
+    return ovalPath;
+}
+
+- (UIBezierPath *)samplePathLastHalf
+{
+    //    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(0 + 30, 0 + 30, self.bounds.size.width -60, self.bounds.size.height -60)];
+    UIBezierPath* ovalPath  = [UIBezierPath bezierPathWithArcCenter:self.layer.position radius:self.layer.bounds.size.width/2 - 30 startAngle:M_PI endAngle:2 * M_PI clockwise:YES];
     
     return ovalPath;
 }
 
 - (void)startAnimation
 {
-    if (self.pathLayer == nil)
-    {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        
-        shapeLayer.path = [[self samplePath] CGPath];
-        shapeLayer.strokeColor = [[UIColor grayColor] CGColor];
-        shapeLayer.fillColor = nil;
-        shapeLayer.lineWidth = 5.0f;
-        shapeLayer.lineJoin = kCALineJoinBevel;
-        
-        [self.parentLayer addSublayer:shapeLayer];
-        
-        self.pathLayer = shapeLayer;
-    }
+    
+    [self.parentLayer addSublayer:self.pathLayerFirstHalf];
+
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 3.0;
     pathAnimation.fromValue = @(0.0f);
     pathAnimation.toValue = @(1.0f);
-    [self.pathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
+    [self.pathLayerFirstHalf addAnimation:pathAnimation forKey:@"strokeEnd"];
+    
+    
     [self addImageLayer];
+    
+//    [self.parentLayer addSublayer:self.pathLayerLastHalf];
+
+    
+    
+}
+
+-(void)changeImage{
+    UIImage *image = [UIImage imageNamed:@"test1.png"];
+    self.imageLayer.contents = (__bridge id)(image.CGImage);
+    [self.layer setNeedsDisplay];
 }
 @end

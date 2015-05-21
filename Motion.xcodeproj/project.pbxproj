@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D57F47E71B0D65EE00EEA4A1 /* test1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D57F47E61B0D65EE00EEA4A1 /* test1@2x.png */; };
 		D5B5B91B1B0C9FF80000C81E /* ArcView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B5B91A1B0C9FF80000C81E /* ArcView.m */; };
 		D5B5B91D1B0CB4020000C81E /* test@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B5B91C1B0CB4020000C81E /* test@2x.png */; };
 		D5C8B1971B0ABD3F005278A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C8B1961B0ABD3F005278A2 /* main.m */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D57F47E61B0D65EE00EEA4A1 /* test1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test1@2x.png"; sourceTree = "<group>"; };
 		D5B5B9191B0C9FF80000C81E /* ArcView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcView.h; sourceTree = "<group>"; };
 		D5B5B91A1B0C9FF80000C81E /* ArcView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcView.m; sourceTree = "<group>"; };
 		D5B5B91C1B0CB4020000C81E /* test@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test@2x.png"; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		D5B5B9181B0C9FE80000C81E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D57F47E61B0D65EE00EEA4A1 /* test1@2x.png */,
 				D5B5B91C1B0CB4020000C81E /* test@2x.png */,
 				D5B5B9191B0C9FF80000C81E /* ArcView.h */,
 				D5B5B91A1B0C9FF80000C81E /* ArcView.m */,
@@ -224,6 +227,7 @@
 				D5C8B1A31B0ABD3F005278A2 /* Main.storyboard in Resources */,
 				D5C8B1A81B0ABD3F005278A2 /* LaunchScreen.xib in Resources */,
 				D5C8B1A51B0ABD3F005278A2 /* Images.xcassets in Resources */,
+				D57F47E71B0D65EE00EEA4A1 /* test1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
