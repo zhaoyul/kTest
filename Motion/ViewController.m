@@ -8,9 +8,11 @@
 
 #import "ViewController.h"
 #import "ArcView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet ArcView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *tempView;
 
 @end
 
@@ -19,7 +21,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-        // Do any additional setup after loading the view, typically from a nib.
+    CATransformLayer *layer1 = [CATransformLayer layer];
+    layer1.bounds = self.tempView.bounds;
+    layer1.position = self.tempView.layer.position;
+    
+    CALayer *redLayer = [CALayer layer];
+    redLayer.backgroundColor = [UIColor redColor].CGColor;
+    redLayer.bounds = self.tempView.bounds;
+    redLayer.position = self.tempView.layer.position;
+    
+    [self.tempView.layer addSublayer:layer1];
+    [layer1 addSublayer:redLayer];
+    
+    CATransform3D transform = layer1.transform;
+    transform.m34 = 1.0/200;
+//    transform = CATransform3DMakeRotation(M_PI_4, 1.0, 0, 0);
+    transform = CATransform3DRotate(transform, -M_PI*2/5, 1.0, 0, 0);
+
+    
+    layer1.transform = transform;
+    
+    self.tempView.layer.backgroundColor = [UIColor grayColor].CGColor;
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

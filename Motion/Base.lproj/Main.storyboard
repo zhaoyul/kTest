@@ -54,6 +54,26 @@
                                     <action selector="changeImage:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="23U-f8-gnN"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72S-NF-zU8">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="omo-RX-T2l"/>
+                                    <constraint firstAttribute="height" constant="207" id="vmF-TP-vSI"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="omo-RX-T2l"/>
+                                        <exclude reference="vmF-TP-vSI"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="omo-RX-T2l"/>
+                                        <include reference="vmF-TP-vSI"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -61,6 +81,8 @@
                             <constraint firstItem="P0l-jB-uzQ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="EeD-l8-MGh"/>
                             <constraint firstItem="ZTs-gb-O2H" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="SGy-57-7Oa"/>
                             <constraint firstItem="9zu-RA-qCa" firstAttribute="baseline" secondItem="P0l-jB-uzQ" secondAttribute="baseline" id="Wfu-uC-1dT"/>
+                            <constraint firstAttribute="centerX" secondItem="72S-NF-zU8" secondAttribute="centerX" id="XQn-KQ-oqF"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="72S-NF-zU8" secondAttribute="bottom" constant="46" id="awN-dk-nT4"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="P0l-jB-uzQ" secondAttribute="bottom" constant="8" symbolic="YES" id="b9D-JR-bAS"/>
                             <constraint firstItem="ZTs-gb-O2H" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="jyC-Pb-Yl4"/>
                             <constraint firstItem="9zu-RA-qCa" firstAttribute="leading" secondItem="P0l-jB-uzQ" secondAttribute="trailing" constant="8" symbolic="YES" id="qQc-Vg-vQt"/>
@@ -70,14 +92,17 @@
                                 <exclude reference="ZTs-gb-O2H"/>
                                 <exclude reference="P0l-jB-uzQ"/>
                                 <exclude reference="9zu-RA-qCa"/>
+                                <exclude reference="72S-NF-zU8"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="3Cx-l8-pSU"/>
                                 <exclude reference="SGy-57-7Oa"/>
                                 <exclude reference="jyC-Pb-Yl4"/>
+                                <exclude reference="XQn-KQ-oqF"/>
                                 <exclude reference="EeD-l8-MGh"/>
                                 <exclude reference="Wfu-uC-1dT"/>
                                 <exclude reference="qQc-Vg-vQt"/>
+                                <exclude reference="awN-dk-nT4"/>
                                 <exclude reference="b9D-JR-bAS"/>
                             </mask>
                         </variation>
@@ -86,20 +111,24 @@
                                 <include reference="ZTs-gb-O2H"/>
                                 <include reference="P0l-jB-uzQ"/>
                                 <include reference="9zu-RA-qCa"/>
+                                <include reference="72S-NF-zU8"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="3Cx-l8-pSU"/>
                                 <include reference="SGy-57-7Oa"/>
                                 <include reference="jyC-Pb-Yl4"/>
+                                <include reference="XQn-KQ-oqF"/>
                                 <include reference="EeD-l8-MGh"/>
                                 <include reference="Wfu-uC-1dT"/>
                                 <include reference="qQc-Vg-vQt"/>
+                                <include reference="awN-dk-nT4"/>
                                 <include reference="b9D-JR-bAS"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="containerView" destination="ZTs-gb-O2H" id="J3b-4u-kjy"/>
+                        <outlet property="tempView" destination="72S-NF-zU8" id="CGb-iC-isf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

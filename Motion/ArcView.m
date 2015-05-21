@@ -12,11 +12,24 @@
 @property (nonatomic, strong) CAShapeLayer *pathLayerFirstHalf;
 @property (nonatomic, strong) CAShapeLayer *pathLayerLastHalf;
 
-@property (nonatomic, strong) CATransformLayer *parentLayer;
+@property (nonatomic, strong) CATransformLayer *parentLayerFirst;
+@property (nonatomic, strong) CATransformLayer *parentLayerLast;
+
+
 @property (nonatomic, strong) CALayer *imageLayer;
 @end
 
 @implementation ArcView
+
+
+- (void)drawRect:(CGRect)rect {
+    [ArcView drawToLayer:self.layer TextAtTopLeftWithText:@"主页面"];
+    
+    [self addFirstContainer];
+    [self.layer addSublayer:self.imageLayer];
+    [self addLastContainer];
+    
+}
 
 -(CAShapeLayer *)pathLayerFirstHalf{
     if (_pathLayerFirstHalf == nil)
@@ -26,7 +39,7 @@
         shapeLayer.path = [[self samplePathFirstHalf] CGPath];
         shapeLayer.strokeColor = [[UIColor grayColor] CGColor];
         shapeLayer.fillColor = nil;
-        shapeLayer.lineWidth = 5.0f;
+        shapeLayer.lineWidth = 1.0f;
         shapeLayer.lineJoin = kCALineJoinBevel;
         
         _pathLayerFirstHalf = shapeLayer;
@@ -43,10 +56,10 @@
         shapeLayer.path = [[self samplePathLastHalf] CGPath];
         shapeLayer.strokeColor = [[UIColor grayColor] CGColor];
         shapeLayer.fillColor = nil;
-        shapeLayer.lineWidth = 5.0f;
+        shapeLayer.lineWidth = 2.0f;
         shapeLayer.lineJoin = kCALineJoinBevel;
         
-        [self.parentLayer addSublayer:shapeLayer];
+        [_parentLayerLast addSublayer:shapeLayer];
         
         _pathLayerLastHalf = shapeLayer;
     }
@@ -54,42 +67,57 @@
     
 }
 
+-(CALayer*)imageLayer{
+    if (!_imageLayer) {
+        UIImage *image = [UIImage imageNamed:@"test.png"];
+        _imageLayer = [CALayer layer];
+        _imageLayer.frame = CGRectMake(0, 0, image.size.width,  image.size.height);
+        _imageLayer.position = self.layer.position;
+        _imageLayer.contents = (__bridge id)image.CGImage;
+        _imageLayer.shadowColor = [[UIColor grayColor] CGColor];
+        _imageLayer.shadowOpacity = 0.5;
+        _imageLayer.shadowRadius = 10.0;
+        CGRect ovalRect = CGRectMake(0.0f, self.imageLayer.bounds.size.height + 5, self.imageLayer.bounds.size.width, 50);
+        UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:ovalRect];
+        _imageLayer.shadowPath = path.CGPath;
+        
+        _imageLayer.backgroundColor = [UIColor redColor].CGColor;
 
-
-- (void)addImageLayer {
-    //    CALayer *green = [ArcView createLayerWithColor:[UIColor greenColor] withPosition:self.layer.position withFrame:self.frame];
-    //    
-    //    [self.parentLayer addSublayer:green];
-    UIImage *image = [UIImage imageNamed:@"test.png"];
-    self.imageLayer = [CALayer layer];
-    self.imageLayer.frame = CGRectMake(0, 0, image.size.width,  image.size.height);
-    self.imageLayer.position = self.layer.position;
-    self.imageLayer.contents = (__bridge id)image.CGImage;
-    [self.layer insertSublayer:self.imageLayer above:self.parentLayer];
-    self.imageLayer.shadowColor = [[UIColor grayColor] CGColor];
-    self.imageLayer.shadowOpacity = 0.5;
-    self.imageLayer.shadowRadius = 10.0;
-    CGRect ovalRect = CGRectMake(0.0f, self.imageLayer.bounds.size.height + 5, self.imageLayer.bounds.size.width, 50);
-    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:ovalRect];
-    self.imageLayer.shadowPath = path.CGPath;
+    }
+    return _imageLayer;
 }
 
-- (void)drawRect:(CGRect)rect {
-    [ArcView drawToLayer:self.layer TextAtTopLeftWithText:@"主页面"];
-    
-    self.parentLayer = [CATransformLayer layer];
+
+
+
+- (void)addFirstContainer {
+    self.parentLayerFirst = [CATransformLayer layer];
     {
-        self.parentLayer.position = self.layer.position;
-        self.parentLayer.bounds = self.bounds;
-        [self.layer addSublayer:self.parentLayer];
+        self.parentLayerFirst.position = self.layer.position;
+        self.parentLayerFirst.bounds = self.bounds;
+        [self.layer addSublayer:self.parentLayerFirst];
     }
     CATransform3D transform = self.layer.transform;
     transform.m34 = 1.0 / 500.0;
     transform = CATransform3DRotate(transform, -M_PI*2/5, 1.0, 0, 0);
-    self.parentLayer.transform = transform;
-    
-    
+    self.parentLayerFirst.transform = transform;
 }
+
+- (void)addLastContainer {
+    self.parentLayerLast = [CATransformLayer layer];
+    {
+        self.parentLayerLast.position = self.layer.position;
+        self.parentLayerLast.bounds = self.bounds;
+        [self.layer addSublayer:self.parentLayerLast];
+    }
+    CATransform3D transform = self.layer.transform;
+    transform.m34 =  1.0 / 500.0;
+    transform = CATransform3DRotate(transform, -M_PI*2/5, 1.0, 0, 0);
+    self.parentLayerLast.transform = transform;
+}
+
+
+
 
 +(void)drawToLayer:(CALayer*)layer TextAtTopLeftWithText:(NSString*) str{
     CATextLayer *label = [[CATextLayer alloc] init];
@@ -116,7 +144,6 @@
 
 - (UIBezierPath *)samplePathFirstHalf
 {
-//    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(0 + 30, 0 + 30, self.bounds.size.width -60, self.bounds.size.height -60)];
     UIBezierPath* ovalPath  = [UIBezierPath bezierPathWithArcCenter:self.layer.position radius:self.layer.bounds.size.width/2 - 30 startAngle:0 endAngle:M_PI clockwise:YES];
     
     return ovalPath;
@@ -124,7 +151,6 @@
 
 - (UIBezierPath *)samplePathLastHalf
 {
-    //    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(0 + 30, 0 + 30, self.bounds.size.width -60, self.bounds.size.height -60)];
     UIBezierPath* ovalPath  = [UIBezierPath bezierPathWithArcCenter:self.layer.position radius:self.layer.bounds.size.width/2 - 30 startAngle:M_PI endAngle:2 * M_PI clockwise:YES];
     
     return ovalPath;
@@ -133,7 +159,10 @@
 - (void)startAnimation
 {
     
-    [self.parentLayer addSublayer:self.pathLayerFirstHalf];
+    [self.parentLayerFirst addSublayer:self.pathLayerFirstHalf];
+
+    
+    [self.parentLayerLast addSublayer:self.pathLayerLastHalf];
 
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
@@ -142,12 +171,7 @@
     pathAnimation.toValue = @(1.0f);
     [self.pathLayerFirstHalf addAnimation:pathAnimation forKey:@"strokeEnd"];
     
-    
-    [self addImageLayer];
-    
-//    [self.parentLayer addSublayer:self.pathLayerLastHalf];
-
-    
+    [self.layer needsDisplay];
     
 }
 
